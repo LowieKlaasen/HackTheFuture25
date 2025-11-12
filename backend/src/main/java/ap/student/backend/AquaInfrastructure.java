@@ -36,6 +36,8 @@ public class AquaInfrastructure {
             String formatted = String.format("%04d", code);
 
             try {
+                System.out.println("Trying code: " + formatted);
+
                 String response = CallAPI(missionId, formatted);
 
                 if (response != null && response.contains("success")) {
@@ -44,11 +46,17 @@ public class AquaInfrastructure {
                     body.put("code", formatted);
                     body.put("externalResponse", response);
 
+                    System.out.println("OK: " + response);
+
                     return ResponseEntity.ok(body);
+                }
+                else {
+                    System.out.println("WRONG: " + response);
                 }
 
             } catch (WebClientResponseException e) {
                 // ignore 4xx or 5xx errors and continue
+                System.out.println("ERROR: " + e.getMessage());
             }
 
             code++;
@@ -137,7 +145,7 @@ public class AquaInfrastructure {
     private String CallAPI(String missionId, String result) {
         String url = "https://htf.collide.be/missions/" + missionId + "/solution";
 
-        return webClient.get()
+        return webClient.post()
                 .uri(url + "?result=" + result)
                 .retrieve()
                 .bodyToMono(String.class)
