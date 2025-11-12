@@ -58,7 +58,6 @@ public class AquaInfrastructure {
         body.put("found", false);
 
         return ResponseEntity.ok(body);
-
     }
 
 }
