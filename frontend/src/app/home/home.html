@@ -1,0 +1,33 @@
+<div class="body">
+  <h1>AQUATECH</h1>
+
+  <div class="quest-container">
+    @for (problem of quest?.problems; track problem.badgeUrl) {
+      <div class="problem-card">
+        <div class="card-header">
+          <h2>{{problem.name}}</h2>
+          @if (problem.solved) {
+            <span class="material-symbols-rounded correct">check_circle</span>
+          } @else {
+            <span class="material-symbols-rounded missing">circle</span>
+          }
+        </div>
+        <p>{{problem.description}}</p>
+
+        <div class="mission-container">
+          @for (mission of problem.mission; track mission.id) {
+            <div class="mission-card" (click)="navigateTo(mission.name)">
+              <h3>{{mission.name}}</h3>
+              @if (mission.solved) {
+                <span class="material-symbols-rounded correct">check_circle</span>
+              } @else {
+                <span class="material-symbols-rounded missing">circle</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
