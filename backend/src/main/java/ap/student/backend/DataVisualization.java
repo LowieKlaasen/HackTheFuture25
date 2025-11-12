@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/data-visualization")
@@ -37,7 +35,7 @@ public class DataVisualization {
         try {
             String response = CallAPI(missionId, String.valueOf(factorial));
 
-            if (response != null && response.contains("success")) {
+            if (response != null && response.contains("\"missionSolved\":true")) {
                 Map<String, Object> body = new HashMap<>();
                 body.put("found", true);
                 body.put("result", factorial);
@@ -119,10 +117,55 @@ public class DataVisualization {
         try {
             String response = CallAPI(missionId, result.toString());
 
-            if (response != null && response.contains("success")) {
+            if (response != null && response.contains("\"missionSolved\":true")) {
                 Map<String, Object> body = new HashMap<>();
                 body.put("found", true);
                 body.put("result", result.toString());
+                body.put("externalResponse", response);
+
+                return ResponseEntity.ok(body);
+            }
+
+        } catch (WebClientResponseException e) {
+            // ignore 4xx or 5xx errors and continue
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("found", false);
+
+        return ResponseEntity.ok(body);
+
+    }
+
+    @GetMapping("EcosystemHealthDashboard")
+    public ResponseEntity<Map<String, Object>> EcosystemHealthDashboard() {
+
+        String missionId = "5917b718-73cb-406f-a422-9a6950016700";
+
+        int start = 57779;
+        int end = 57879;
+
+
+        List<Integer> primes = new ArrayList<>();
+
+        for (int i = start; i <= end; i++) {
+            if (isPrime(i)) {
+                primes.add(i);
+            }
+        }
+
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("solution", primes.toString());
+//
+//        return ResponseEntity.ok(body);
+
+        try {
+            String response = CallAPI(missionId, primes.toString());
+
+            if (response != null && response.contains("\"missionSolved\":true")) {
+                Map<String, Object> body = new HashMap<>();
+                body.put("found", true);
+                body.put("result", primes.toString());
                 body.put("externalResponse", response);
 
                 return ResponseEntity.ok(body);
@@ -151,6 +194,19 @@ public class DataVisualization {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
+    }
+
+
+    private boolean isPrime(int n) {
+        if (n <= 1) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+
+        int sqrt = (int) Math.sqrt(n);
+        for (int i = 3; i <= sqrt; i += 2) {
+            if (n % i == 0) return false;
+        }
+        return true;
     }
 
     // endregion
