@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-aqua-infrastructure',
@@ -9,16 +10,32 @@ import { Component } from '@angular/core';
   styleUrl: './aqua-infrastructure.component.css'
 })
 export class AquaInfrastructureComponent {
+  private http = inject(HttpClient);
+  
   password = 'Unknown';
   isLoading = false;
 
   crackPassword() {
     this.isLoading = true;
+    this.password = 'Unknown';
 
-    setTimeout(() => {
-      this.isLoading = false;
-      this.password = '0001';
-    }, 3000);
+    this.http.get<{ found: boolean; code?: string; externalResponse?: string }>(
+      '/aqua-infrastructure/ModularExpansionKit'
+    ).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        
+        if (response.found && response.code) {
+          this.password = response.code;
+        } else {
+          this.password = 'Not Found';
+        }
+      },
+      error: (error) => {
+        console.error('Error cracking password:', error);
+        this.isLoading = false;
+        this.password = 'Error';
+      }
+    });
   }
 }
- 

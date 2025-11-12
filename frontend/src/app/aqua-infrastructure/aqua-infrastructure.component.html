@@ -1,15 +1,17 @@
 <div class="body">
-  <h1>Modular Expansion Kit Password</h1>
-  <p>The password is:</p>
-  <h2>
-    <ng-container *ngIf="!isLoading; else loading">
-      {{ password }}
-    </ng-container>
-  </h2>
+  <div class="content-card">
+    <h1>Modular Expansion Kit Password</h1>
+    <p>The password is:</p>
+    <h2>
+      <ng-container *ngIf="!isLoading; else loading">
+        <span class="typewriter">{{ password }}</span>
+      </ng-container>
+    </h2>
 
-  <ng-template #loading>
-    <div class="spinner"></div>
-  </ng-template>
+    <ng-template #loading>
+      <div class="spinner"></div>
+    </ng-template>
 
-  <button (click)="crackPassword()">Crack Password</button>
+    <button (click)="crackPassword()">Crack Password</button>
+  </div>
 </div>
