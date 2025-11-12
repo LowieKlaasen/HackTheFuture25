@@ -117,6 +117,34 @@ public class CommunicationSystems {
 
     }
 
+    @GetMapping("NetworkTrafficManager")
+    public ResponseEntity<Map<String, Object>> networkTrafficManager() {
+
+        String missionId = "1c2709ba-1872-4742-a0cf-78a01ed706d5";
+
+        String parameter = "0012333467788999ABBBCCDEEEEFFFGGHHIIJKKKKKLLLLLLMMMMNNOPPQQRRRRSSSTTTUUUUUVVVWWWXXXYYZZZZaabbcccdddddeegghjkklllmmnnnoppppprrsstuuvvvwwxxxyyyyyz";
+
+        for (int i = 1; i < parameter.length(); i++) {
+            if (parameter.charAt(i) < parameter.charAt(i - 1)) {
+                // Not in alphabetical order
+                CallAPI(missionId, "N");
+
+                Map<String, Object> body = new HashMap<>();
+                body.put("found", true);
+                body.put("result", "The string is NOT in alphabetical order");
+
+                return ResponseEntity.ok(body);
+            }
+        }
+        // In alphabetical order
+        CallAPI(missionId, "Y");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("found", true);
+        body.put("result", "The string is in alphabetical order");
+        return ResponseEntity.ok(body);
+    }
+
 
 
 
