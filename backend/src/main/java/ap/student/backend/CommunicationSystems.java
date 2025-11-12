@@ -71,6 +71,52 @@ public class CommunicationSystems {
 
     }
 
+    @GetMapping("DataCompressionModule")
+    public ResponseEntity<Map<String, Object>> dataCompressionModule() {
+
+        String missionId = "f6881aef-07d8-4b67-b051-37f3ed05cef1";
+
+        String parameter = "yxwboqnylvuli";
+
+        StringBuilder decoded = new StringBuilder();
+
+        for (char c : parameter.toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                decoded.append((char) ('a' + (c - 'a' + 13) % 26));
+            } else if (c >= 'A' && c <= 'Z') {
+                decoded.append((char) ('A' + (c - 'A' + 13) % 26));
+            } else {
+                decoded.append(c);
+            }
+        }
+
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("result", decoded.toString());
+//
+//        return ResponseEntity.ok(body);
+
+        try {
+            String response = CallAPI(missionId, decoded.toString());
+
+            if (response != null && response.contains("\"missionSolved\":true")) {
+                Map<String, Object> body = new HashMap<>();
+                body.put("found", true);
+                body.put("result", decoded.toString());
+                body.put("externalResponse", response);
+
+                return ResponseEntity.ok(body);
+            }
+
+        } catch (WebClientResponseException e) {
+            // ignore 4xx or 5xx errors and continue
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("found", false);
+        return ResponseEntity.ok(body);
+
+    }
+
 
 
 
