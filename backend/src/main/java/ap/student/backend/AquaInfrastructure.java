@@ -86,7 +86,7 @@ public class AquaInfrastructure {
         try {
             String response = CallAPI(missionId, String.valueOf(a));
 
-            if (response != null && response.contains("success")) {
+            if (response != null && response.contains("\"missionSolved\":true")) {
                 Map<String, Object> body = new HashMap<>();
                 body.put("found", true);
                 body.put("result", a);
@@ -118,7 +118,7 @@ public class AquaInfrastructure {
         try {
             String response = CallAPI(missionId, decodedString);
 
-            if (response != null && response.contains("success")) {
+            if (response != null && response.contains("\"missionSolved\":true")) {
                 Map<String, Object> body = new HashMap<>();
                 body.put("found", true);
                 body.put("result", decodedString);
