@@ -1,0 +1,19 @@
+<div class="body">
+  <div class="content-card">
+    <h1>Energy-Efficient Water Pump</h1>
+    <p>The Greatest Common Divisor (GCD) of 861 and 712 is:</p>
+    <h2>
+      <ng-container *ngIf="!isLoading; else loading">
+        <span class="typewriter" *ngIf="divider > 0">{{ divider }}</span>
+        <span class="typewriter" *ngIf="divider === 0">Calculate now!</span>
+        <span class="typewriter error" *ngIf="divider === -1">Error</span>
+      </ng-container>
+    </h2>
+
+    <ng-template #loading>
+      <div class="spinner"></div>
+    </ng-template>
+
+    <button (click)="calculateDivider()">Calculate</button>
+  </div>
+</div>

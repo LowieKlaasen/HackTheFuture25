@@ -1,0 +1,18 @@
+<div class="body">
+  <div class="content-card">
+    <h1>Foundation Anchor</h1>
+    <p>Decode Q1BzbU5EcVJjVU4wWlZuRFNVSQ==</p>
+    <h2>
+      <ng-container *ngIf="!isLoading; else loading">
+        <span class="typewriter">{{ decodedString }}</span>
+        <span class="typewriter">{{ encodingType }}</span>
+      </ng-container>
+    </h2>
+
+    <ng-template #loading>
+      <div class="spinner"></div>
+    </ng-template>
+
+    <button (click)="(decode)">Decode string</button>
+  </div>
+</div>
