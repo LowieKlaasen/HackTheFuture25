@@ -1,39 +1,32 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-interface DecodeResponse {
-  found: boolean;
-  result?: string;
-  externalResponse?: string;
-}
+import { Component, inject } from '@angular/core';
 
 @Component({
-  selector: 'app-decode',
+  selector: 'app-sensor-buoy-netwerk',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './decode.component.html',
-  styleUrl: './decode.component.css'
+  templateUrl: './sensor-buoy-netwerk.component.html',
+  styleUrl: './sensor-buoy-netwerk.component.css'
 })
-export class DecodeComponent {
+export class SensorBuoyNetwerkComponent {
   private http = inject(HttpClient);
-  
+
   decodedString = "Decode now!";
-  encodingType = "Base64";
   isLoading = false;
   found = false;
 
   decode() {
     this.isLoading = true;
-    this.decodedString = "Decode now!";
+    this.decodedString = "Decoding...";
     this.found = false;
 
     this.http.get<DecodeResponse>(
-      '/aqua-infrastructure/FoundationAnchor'
+      '/data-visualization/SensorBuoyNetwork'
     ).subscribe({
       next: (response) => {
         this.isLoading = false;
-        
+
         if (response.found && response.result) {
           this.decodedString = response.result;
           this.found = true;
@@ -50,4 +43,10 @@ export class DecodeComponent {
       }
     });
   }
+}
+
+interface DecodeResponse {
+  found: boolean;
+  result?: string;
+  externalResponse?: string;
 }

@@ -1,0 +1,19 @@
+<div class="body">
+  <div class="content-card">
+    <h2>
+      <ng-container *ngIf="!isLoading; else loading">
+        <span class="typewriter" *ngIf="factorial > 0">{{ factorial }}</span>
+
+        <span class="typewriter" *ngIf="factorial === 0">Calculate now!</span>
+
+        <span class="typewriter error" *ngIf="factorial === -1">Error</span>
+      </ng-container>
+    </h2>
+
+    <ng-template #loading>
+      <div class="spinner"></div>
+    </ng-template>
+
+    <button (click)="calculateFactorial()">Calculate factorial</button>
+  </div>
+</div>
