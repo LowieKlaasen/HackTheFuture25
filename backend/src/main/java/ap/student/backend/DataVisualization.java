@@ -57,8 +57,87 @@ public class DataVisualization {
 
     }
 
-//    @GetMapping("SensorBuoyNetwork")
-//    public ResponseEntity<Map<String, Object>> sensorBuoyNetwork() {}
+    @GetMapping("SensorBuoyNetwork")
+    public ResponseEntity<Map<String, Object>> sensorBuoyNetwork() {
+
+        String missionId = "e8265cf5-4cd7-47e8-b959-3d3a59985358";
+
+        String morseCode = "-.-. -. -.-- --- .. .- .-- -.-- .--. -.-.";
+
+        Map<String, Character> morseCodeMap = new HashMap<>();
+
+        morseCodeMap.put(".-", 'A');
+        morseCodeMap.put("-...", 'B');
+        morseCodeMap.put("-.-.", 'C');
+        morseCodeMap.put("-..", 'D');
+        morseCodeMap.put(".", 'E');
+        morseCodeMap.put("..-.", 'F');
+        morseCodeMap.put("--.", 'G');
+        morseCodeMap.put("....", 'H');
+        morseCodeMap.put("..", 'I');
+        morseCodeMap.put(".---", 'J');
+        morseCodeMap.put("-.-", 'K');
+        morseCodeMap.put(".-..", 'L');
+        morseCodeMap.put("--", 'M');
+        morseCodeMap.put("-.", 'N');
+        morseCodeMap.put("---", 'O');
+        morseCodeMap.put(".--.", 'P');
+        morseCodeMap.put("--.-", 'Q');
+        morseCodeMap.put(".-.", 'R');
+        morseCodeMap.put("...", 'S');
+        morseCodeMap.put("-", 'T');
+        morseCodeMap.put("..-", 'U');
+        morseCodeMap.put("...-", 'V');
+        morseCodeMap.put(".--", 'W');
+        morseCodeMap.put("-..-", 'X');
+        morseCodeMap.put("-.--", 'Y');
+        morseCodeMap.put("--..", 'Z');
+        morseCodeMap.put("-----", '0');
+        morseCodeMap.put(".----", '1');
+        morseCodeMap.put("..---", '2');
+        morseCodeMap.put("...--", '3');
+        morseCodeMap.put("....-", '4');
+        morseCodeMap.put(".....", '5');
+        morseCodeMap.put("-....", '6');
+        morseCodeMap.put("--...", '7');
+        morseCodeMap.put("---..", '8');
+        morseCodeMap.put("----.", '9');
+
+
+        StringBuilder result = new StringBuilder();
+        String[] codes = morseCode.trim().split(" ");
+
+        for (String code : codes) {
+            Character c = morseCodeMap.get(code);
+            if (c != null) {
+                result.append(c);
+            } else {
+                result.append('?'); // unknown character
+            }
+        }
+
+        try {
+            String response = CallAPI(missionId, result.toString());
+
+            if (response != null && response.contains("success")) {
+                Map<String, Object> body = new HashMap<>();
+                body.put("found", true);
+                body.put("result", result.toString());
+                body.put("externalResponse", response);
+
+                return ResponseEntity.ok(body);
+            }
+
+        } catch (WebClientResponseException e) {
+            // ignore 4xx or 5xx errors and continue
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("found", false);
+
+        return ResponseEntity.ok(body);
+
+    }
 
 
 
